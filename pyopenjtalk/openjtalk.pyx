@@ -11,18 +11,18 @@ np.import_array()
 cimport cython
 from libc.stdlib cimport calloc
 
-from openjtalk.mecab cimport Mecab, Mecab_initialize, Mecab_load, Mecab_analysis
-from openjtalk.mecab cimport Mecab_get_feature, Mecab_get_size, Mecab_refresh, Mecab_clear
-from openjtalk.mecab cimport mecab_dict_index, createModel, Model, Tagger, Lattice
-from openjtalk.njd cimport NJD, NJD_initialize, NJD_refresh, NJD_print, NJD_clear
-from openjtalk cimport njd as _njd
-from openjtalk.jpcommon cimport JPCommon, JPCommon_initialize,JPCommon_make_label
-from openjtalk.jpcommon cimport JPCommon_get_label_size, JPCommon_get_label_feature
-from openjtalk.jpcommon cimport JPCommon_refresh, JPCommon_clear
-from openjtalk cimport njd2jpcommon
-from openjtalk.text2mecab cimport text2mecab
-from openjtalk.mecab2njd cimport mecab2njd
-from openjtalk.njd2jpcommon cimport njd2jpcommon
+from .openjtalk.mecab cimport Mecab, Mecab_initialize, Mecab_load, Mecab_analysis
+from .openjtalk.mecab cimport Mecab_get_feature, Mecab_get_size, Mecab_refresh, Mecab_clear
+from .openjtalk.mecab cimport mecab_dict_index, createModel, Model, Tagger, Lattice
+from .openjtalk.njd cimport NJD, NJD_initialize, NJD_refresh, NJD_print, NJD_clear
+from .openjtalk cimport njd as _njd
+from .openjtalk.jpcommon cimport JPCommon, JPCommon_initialize,JPCommon_make_label
+from .openjtalk.jpcommon cimport JPCommon_get_label_size, JPCommon_get_label_feature
+from .openjtalk.jpcommon cimport JPCommon_refresh, JPCommon_clear
+from .openjtalk cimport njd2jpcommon
+from .openjtalk.text2mecab cimport text2mecab
+from .openjtalk.mecab2njd cimport mecab2njd
+from .openjtalk.njd2jpcommon cimport njd2jpcommon
 from libc.string cimport strlen
 
 cdef inline int Mecab_load_ex(Mecab *m, char* dicdir, char* userdic):
