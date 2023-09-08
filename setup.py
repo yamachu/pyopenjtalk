@@ -16,7 +16,7 @@ from setuptools import Extension, find_packages, setup
 
 platform_is_windows = sys.platform == "win32"
 
-version = "0.3.0"
+version = "0.3.2"
 
 min_cython_ver = "0.21.0"
 try:
@@ -69,6 +69,43 @@ else:
     cmdclass = {}
     if not os.path.exists(join("pyopenjtalk", "openjtalk" + ext)):
         raise RuntimeError("Cython is required to generate C++ code")
+
+
+def check_cmake_in_path():
+    try:
+        result = subprocess.run(
+            ["cmake", "--version"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if result.returncode == 0:
+            # CMake is in the system path
+            return True, result.stdout.strip()
+        else:
+            # CMake is not in the system path
+            return False, None
+    except FileNotFoundError:
+        # CMake command not found
+        return False, None
+
+
+if os.name == "nt":  # Check if the OS is Windows
+    # Check if CMake is in the system path
+    cmake_found, cmake_version = check_cmake_in_path()
+
+    if cmake_found:
+        print(
+            f"CMake is in the system path. Version: \
+              {cmake_version}"
+        )
+    else:
+        raise SystemError(
+            "CMake is not found in the \
+                          system path. Make sure CMake \
+                          is installed and in the system \
+                          path."
+        )
 
 
 # Workaround for `distutils.spawn` problem on Windows python < 3.9
@@ -277,7 +314,6 @@ setup(
     cmdclass=cmdclass,
     install_requires=[
         "numpy >= 1.20.0",
-        "cython >= " + min_cython_ver,
         "six",
         "tqdm",
     ],
@@ -291,7 +327,8 @@ setup(
             "ipython",
             "jupyter",
         ],
-        "lint": [
+        "dev": [
+            "cython >= " + min_cython_ver + ",<3.0.0",
             "pysen",
             "types-setuptools",
             "mypy<=0.910",
@@ -301,6 +338,7 @@ setup(
             "flake8-bugbear",
             "isort>=4.3,<5.2.0",
             "types-decorator",
+            "importlib-metadata<5.0",
         ],
         "test": ["pytest", "scipy"],
         "marine": ["marine>=0.0.5"],
